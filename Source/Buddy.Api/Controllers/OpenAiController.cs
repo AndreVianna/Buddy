@@ -11,18 +11,37 @@ public class OpenAiController : ControllerBase
         _client = client;
     }
 
-    [HttpGet("send")]
-    public async Task<IActionResult> GenerateChatAsync(string prompt)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] string? system = null)
     {
-        if (string.IsNullOrEmpty(prompt))
+        try
+        {
+            var chat = await _client.CreateAsync(system);
+            return Ok(chat);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    [HttpPost("{id:guid}")]
+    public async Task<IActionResult> SendAsync([FromRoute] Guid id, [FromBody] string prompt)
+    {
+        if (string.IsNullOrWhiteSpace(prompt))
         {
             return BadRequest("Prompt cannot be empty.");
         }
 
         try
         {
-            var response = await _client.GenerateTextAsync(prompt);
-            return Ok(response);
+            var answer = await _client.SendAsync(id, prompt);
+            if (answer is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(answer);
         }
         catch (Exception ex)
         {
