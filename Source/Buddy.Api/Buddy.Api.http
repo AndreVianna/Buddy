@@ -1,0 +1,13 @@
+﻿@Buddy.Api_HostAddress = https://localhost:7113
+
+GET {{Buddy.Api_HostAddress}}/api/openai/models
+
+###
+
+GET {{Buddy.Api_HostAddress}}/api/openai/models/gpt-4
+
+###
+
+GET {{Buddy.Api_HostAddress}}/api/openai/models/invalid
+
+###

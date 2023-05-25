@@ -6,7 +6,8 @@ builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton(provider =>
 {
     var apiKey = builder.Configuration.GetValue<string>("OpenAI:ApiKey")!;
-    return new OpenAiApiClient(apiKey);
+    var factory = provider.GetRequiredService<ILoggerFactory>();
+    return new OpenAiApiClient(apiKey, factory.CreateLogger<OpenAiApiClient>());
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

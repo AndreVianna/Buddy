@@ -1,5 +1,6 @@
 // Global using directives
 
+global using System.Collections.Concurrent;
 global using System.Reflection;
 global using Buddy.Api;
 global using Buddy.Api.Services;
